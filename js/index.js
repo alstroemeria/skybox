@@ -20,7 +20,6 @@ function init() {
 	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1100 );
 
 	scene = new THREE.Scene();
-
 	texture_placeholder = document.createElement( 'canvas' );
 	texture_placeholder.width = 128;
 	texture_placeholder.height = 128;
