@@ -26,19 +26,8 @@ function init() {
 	texture_placeholder.height = 128;
 
 	var context = texture_placeholder.getContext( '2d' );
-	context.fillStyle = 'rgb( 200, 200, 200 )';
+	context.fillStyle = 'rgb( 0, 0, 0 )';
 	context.fillRect( 0, 0, texture_placeholder.width, texture_placeholder.height );
-
-	// var materials = [
-
-	// 	loadTexture( 'px.jpg' ), // right
-	// 	loadTexture( 'nx.jpg' ), // left
-	// 	loadTexture( 'py.jpg' ), // top
-	// 	loadTexture( 'ny.jpg' ), // bottom
-	// 	loadTexture( 'pz.jpg' ), // back
-	// 	loadTexture( 'nz.jpg' )  // front
-
-	// ];
 
 	var materials = [
 
