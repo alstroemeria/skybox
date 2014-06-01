@@ -17,6 +17,8 @@ function init() {
 	var container, mesh;
 
 	container = document.getElementById( 'container' );
+  var intro = document.getElementById( 'intro' );
+
 
 	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1100 );
 
@@ -51,13 +53,13 @@ function init() {
     
 	container.appendChild( renderer.domElement );
 
-	container.addEventListener( 'mousedown', onDocumentMouseDown, false );
-	container.addEventListener( 'mousemove', onDocumentMouseMove, false );
-	container.addEventListener( 'mouseup', onDocumentMouseUp, false );
+	intro.addEventListener( 'mousedown', onDocumentMouseDown, false );
+	intro.addEventListener( 'mousemove', onDocumentMouseMove, false );
+	intro.addEventListener( 'mouseup', onDocumentMouseUp, false );
 	// document.addEventListener( 'mousewheel', onDocumentMouseWheel, false );
 
-	container.addEventListener( 'touchstart', onDocumentTouchStart, false );
-	container.addEventListener( 'touchmove', onDocumentTouchMove, false );
+	intro.addEventListener( 'touchstart', onDocumentTouchStart, false );
+	intro.addEventListener( 'touchmove', onDocumentTouchMove, false );
 
 	//
 
@@ -118,8 +120,8 @@ function onDocumentMouseMove( event ) {
   else{   
     dX=(event.clientX-mid_x);
     dY=(event.clientY-mid_y);
-    vlon = dX*0.0005;
-    vlat = -dY*0.0005;
+    vlon = dX*0.0001;
+    vlat = -dY*0.0001;
   }
 
 }
