@@ -3,9 +3,10 @@ var camera, scene, renderer;
 var texture_placeholder,
 isUserInteracting = false,
 onMouseDownMouseX = 0, onMouseDownMouseY = 0,
+vlon = 0, vlat =0, dY=0,dX=0
 lon = 90, onMouseDownLon = 0,
 lat = 0, onMouseDownLat = 0,
-phi = 0, theta = 0,
+phi = 0, theta = 0, mid_y = 0, mid_x= 0,
 target = new THREE.Vector3();
 
 init();
@@ -43,18 +44,20 @@ function init() {
 	mesh.scale.x = - 1;
 	scene.add( mesh );
 
-	renderer = new THREE.CanvasRenderer();
+	renderer = new THREE.WebGLRenderer();
 	renderer.setSize( window.innerWidth, window.innerHeight );
-
+  mid_x = window.innerWidth/2;
+  mid_y = window.innerHeight/2;
+    
 	container.appendChild( renderer.domElement );
 
-	document.addEventListener( 'mousedown', onDocumentMouseDown, false );
-	document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-	document.addEventListener( 'mouseup', onDocumentMouseUp, false );
+	container.addEventListener( 'mousedown', onDocumentMouseDown, false );
+	container.addEventListener( 'mousemove', onDocumentMouseMove, false );
+	container.addEventListener( 'mouseup', onDocumentMouseUp, false );
 	// document.addEventListener( 'mousewheel', onDocumentMouseWheel, false );
 
-	document.addEventListener( 'touchstart', onDocumentTouchStart, false );
-	document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+	container.addEventListener( 'touchstart', onDocumentTouchStart, false );
+	container.addEventListener( 'touchmove', onDocumentTouchMove, false );
 
 	//
 
@@ -68,7 +71,8 @@ function onWindowResize() {
 	camera.updateProjectionMatrix();
 
 	renderer.setSize( window.innerWidth, window.innerHeight );
-
+  mid_x = window.innerWidth/2;
+  mid_y = window.innerHeight/2;
 }
 
 function loadTexture( path ) {
@@ -111,19 +115,18 @@ function onDocumentMouseMove( event ) {
 		lat = ( event.clientY - onPointerDownPointerY ) * 0.1 + onPointerDownLat;
 
 	}
+  else{   
+    dX=(event.clientX-mid_x);
+    dY=(event.clientY-mid_y);
+    vlon = dX*0.0005;
+    vlat = -dY*0.0005;
+  }
 
 }
 
 function onDocumentMouseUp( event ) {
 
 	isUserInteracting = false;
-
-}
-
-function onDocumentMouseWheel( event ) {
-
-	camera.fov -= event.wheelDeltaY * 0.05;
-	camera.updateProjectionMatrix();
 
 }
 
@@ -168,7 +171,8 @@ function update() {
 
 	if ( isUserInteracting === false ) {
 
-		lon += 0.04;
+		lon += vlon;
+		lat += vlat;
 
 	}
 
