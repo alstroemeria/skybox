@@ -118,10 +118,10 @@ function onDocumentMouseMove( event ) {
 
 	}
   else{   
-    dX=(event.clientX-mid_x);
-    dY=(event.clientY-mid_y);
-    vlon = dX*0.0001;
-    vlat = -dY*0.0001;
+    dX=(event.clientX-mid_x)/mid_x;
+    dY=(event.clientY-mid_y)/mid_x;
+    vlon = dX*0.075;
+    vlat = -dY*0.075;
   }
 
 }
