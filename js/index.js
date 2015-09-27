@@ -1,9 +1,9 @@
-var camera, scene, renderer;
+var camera, scene, renderer, composer, gui;
 
 var texture_placeholder,
 isUserInteracting = false,
 onMouseDownMouseX = 0, onMouseDownMouseY = 0,
-vlon = 0, vlat =0, dY=0,dX=0
+vlon = 0.1, vlat =0, dY=0,dX=0
 lon = 90, onMouseDownLon = 0,
 lat = 0, onMouseDownLat = 0,
 phi = 0, theta = 0, mid_y = 0, mid_x= 0,
@@ -13,12 +13,10 @@ init();
 animate();
 
 function init() {
-
 	var container, mesh;
 
 	container = document.getElementById( 'container' );
-  var intro = document.getElementById( 'intro' );
-
+  	var intro = document.getElementById( 'intro' );
 
 	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1100 );
 
@@ -33,12 +31,12 @@ function init() {
 
 	var materials = [
 
-		loadTexture( 'assets/sky56rt.jpg' ), // right
-		loadTexture( 'assets/sky56lf.jpg' ), // right
-		loadTexture( 'assets/sky56up.jpg' ), // right
-		loadTexture( 'assets/sky56dn.jpg' ), // right
-		loadTexture( 'assets/sky56bk.jpg' ), // right
-		loadTexture( 'assets/sky56ft.jpg' ), // right
+		loadTexture( 'assets/skyrt.jpg' ), 
+		loadTexture( 'assets/skylf.jpg' ),
+		loadTexture( 'assets/skyup.jpg' ),
+		loadTexture( 'assets/skydn.jpg' ),
+		loadTexture( 'assets/skybk.jpg' ),
+		loadTexture( 'assets/skyft.jpg' ),
 
 	];
 
@@ -48,33 +46,36 @@ function init() {
 
 	renderer = new THREE.WebGLRenderer();
 	renderer.setSize( window.innerWidth, window.innerHeight );
-  mid_x = window.innerWidth/2;
-  mid_y = window.innerHeight/2;
-    
-	container.appendChild( renderer.domElement );
+  	mid_x = window.innerWidth/2;
+  	mid_y = window.innerHeight/2;
+  	container.appendChild( renderer.domElement );
+
+  	composer = new WAGNER.Composer( renderer );
+	composer.setSize( window.innerWidth, window.innerHeight );
+	vignettePass = new WAGNER.VignettePass();
+
+ 	// gui = new dat.GUI();
+	// gui.add( vignettePass.params, 'amount' ).min(0).max(10);
+	// gui.add( vignettePass.params, 'falloff' ).min(0).max(10);
+	// gui.open();
 
 	intro.addEventListener( 'mousedown', onDocumentMouseDown, false );
 	intro.addEventListener( 'mousemove', onDocumentMouseMove, false );
 	intro.addEventListener( 'mouseup', onDocumentMouseUp, false );
-	// document.addEventListener( 'mousewheel', onDocumentMouseWheel, false );
 
 	intro.addEventListener( 'touchstart', onDocumentTouchStart, false );
 	intro.addEventListener( 'touchmove', onDocumentTouchMove, false );
 
-	//
-
 	window.addEventListener( 'resize', onWindowResize, false );
-
 }
 
 function onWindowResize() {
-
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
 
 	renderer.setSize( window.innerWidth, window.innerHeight );
-  mid_x = window.innerWidth/2;
-  mid_y = window.innerHeight/2;
+	mid_x = window.innerWidth/2;
+	mid_y = window.innerHeight/2;
 }
 
 function loadTexture( path ) {
@@ -84,19 +85,15 @@ function loadTexture( path ) {
 
 	var image = new Image();
 	image.onload = function () {
-
 		texture.image = this;
 		texture.needsUpdate = true;
-
 	};
 	image.src = path;
 
 	return material;
-
 }
 
 function onDocumentMouseDown( event ) {
-
 	event.preventDefault();
 
 	isUserInteracting = true;
@@ -106,37 +103,25 @@ function onDocumentMouseDown( event ) {
 
 	onPointerDownLon = lon;
 	onPointerDownLat = lat;
-
 }
 
 function onDocumentMouseMove( event ) {
-
 	if ( isUserInteracting === true ) {
-
 		lon = ( onPointerDownPointerX - event.clientX ) * 0.1 + onPointerDownLon;
 		lat = ( event.clientY - onPointerDownPointerY ) * 0.1 + onPointerDownLat;
-
 	}
-  else{   
-    dX=(event.clientX-mid_x)/mid_x;
-    dY=(event.clientY-mid_y)/mid_x;
-    vlon = dX*0.075;
-    vlat = -dY*0.075;
-  }
-
+	else{   
+		dX=(event.clientX-mid_x)/mid_x;
+		dY=(event.clientY-mid_y)/mid_x;
+	}
 }
 
 function onDocumentMouseUp( event ) {
-
 	isUserInteracting = false;
-
 }
 
-
 function onDocumentTouchStart( event ) {
-
 	if ( event.touches.length == 1 ) {
-
 		event.preventDefault();
 
 		onPointerDownPointerX = event.touches[ 0 ].pageX;
@@ -144,38 +129,26 @@ function onDocumentTouchStart( event ) {
 
 		onPointerDownLon = lon;
 		onPointerDownLat = lat;
-
 	}
-
 }
 
 function onDocumentTouchMove( event ) {
-
 	if ( event.touches.length == 1 ) {
-
 		event.preventDefault();
-
 		lon = ( onPointerDownPointerX - event.touches[0].pageX ) * 0.1 + onPointerDownLon;
 		lat = ( event.touches[0].pageY - onPointerDownPointerY ) * 0.1 + onPointerDownLat;
-
 	}
-
 }
 
 function animate() {
-
 	requestAnimationFrame( animate );
 	update();
-
 }
 
 function update() {
-
 	if ( isUserInteracting === false ) {
-
-		lon += vlon;
-		lat += vlat;
-
+		lon += vlon + dX*0.02;
+		lat += vlat - dY*0.05;
 	}
 
 	lat = Math.max( - 85, Math.min( 85, lat ) );
@@ -187,7 +160,8 @@ function update() {
 	target.z = 500 * Math.sin( phi ) * Math.sin( theta );
 
 	camera.lookAt( target );
-
-	renderer.render( scene, camera );
-
+	composer.reset();
+	composer.render( scene, camera );
+	composer.pass( vignettePass );
+	composer.toScreen();
 }
