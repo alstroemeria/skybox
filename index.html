@@ -1,45 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
- 	<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">	
+    <head>
+     	<meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">	
 
-	<title>The Spaces Above Us</title>
+    	<title>The Spaces Above Us</title>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:light' rel='stylesheet' type='text/css'>
 
-    <!-- Fonts -->
-    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:light' rel='stylesheet' type='text/css'>
+        <link href="css/normalize.min.css" rel="stylesheet">
+        <link href="css/main.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="loader">
+            <div class="bar"></div>
+            <div class="intro load">
+                <div class="lato"><b>Alstroemeria</b> Experiments</div>
+            </div>
+        </div>
 
-    <!-- Custom Theme CSS -->
-    <link href="css/main.css" rel="stylesheet">
-</head>
-
-<body>
-     <section class="intro">
-        <div id="intro" class="intro-body">
-        	<div id="container"> </div>
-            <div class="container">
-                    <div class="col-md-8 col-md-offset-2">
-                        <h1>The spaces above us</h1>
-                        <h2>- A webgl experiment -</p>      
-                    </div>
+        <div class="interface">
+            <div class="intro main">
+                <div>            
+                    <div class="lato">The Spaces Above Us</div>
+                    <div class="latolight">- A webgl environment -</div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Custom Theme JavaScript -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r72/three.min.js"></script>
-    <script src="js/Wagner.js"></script>
-    <script src="js/Wagner.base.js"></script>
-    <script src="js/dat.gui.min.js"></script>
-
-	<script src="js/index.js"></script>
-
-</body>
-
+        <div class="scripts">
+            <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r72/three.min.js"></script>
+            <script src="js/CSSPlugin.min.js"></script>
+            <script src="js/TimelineLite.min.js"></script>
+            <script src="js/TweenLite.min.js"></script>
+            <script src="js/Wagner.js"></script>
+            <script src="js/Wagner.base.js"></script>
+            <script src="js/dat.gui.min.js"></script>
+        	<script src="js/index.js"></script>
+        </div>
+    </body>
 </html>
